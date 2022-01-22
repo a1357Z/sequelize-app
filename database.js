@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('userDB', 'ajay', '1145', {
+//new Sequelize("database", "username", "password", options)
+const sequelize = new Sequelize(
+  process.env.database,
+  process.env.username, 
+  process.env.password, 
+  {
     host: '127.0.0.1',
     port: 3306,
     dialect: 'mysql',
@@ -11,7 +16,8 @@ const sequelize = new Sequelize('userDB', 'ajay', '1145', {
       evict: 15000,
       acquire: 30000
     },
-});
+  }
+);
 
 
 //testing the connection

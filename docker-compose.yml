@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+    app:
+        container_name: sequelize_app
+        restart: always
+        build: . 
+        ports:
+            - '3000:3000'
+        command:
+        - 'npm start'
+        depends_on: [db]
+        volumes:
+          - app_data:/var/lib/sequelize_app
+        env_file:
+        - .env
+    
+    db:
+      container_name: sequelize_database
+      image: mysql:latest
+      volumes:
+        - db_data:/var/lib/sequelize_app_db
+      restart: always
+      ports:
+        - '27017:27017'
+      environment:
+        MYSQL_ROOT_PASSWORD: 1145
+      #   MYSQL_DATABASE: wordpress
+      #   MYSQL_USER: wordpress
+      #   MYSQL_PASSWORD: wordpress
+      env_file:
+        - .env
+        # reading the environment variables from the env file
+
+networks:
+  existing-network:
+    external: true 
+      # using the pre-existing default network
+
+volumes:
+    db_data: 
+    app_data:
+      # docker-compose build --> this will build the images
+      # docker-compose up -d --> this will run the services in detached mode
+    

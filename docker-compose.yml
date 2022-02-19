@@ -2,44 +2,58 @@ version: '3.3'
 
 services:
     app:
-        container_name: sequelize_app
-        restart: always
+        container_name: sequelize-app
+        # restart: always
+        networks:
+          - backend
         build: . 
         ports:
-            - '3000:3000'
-        command:
-        - 'npm start'
-        depends_on: [db]
-        volumes:
-          - app_data:/var/lib/sequelize_app
+          - '3000:3000' # <port exposed on server>: <port exposed on docker container>
+        # command:
+        #   - 'npm run start'
+        depends_on: [db] #this makes sure that db runs before this service
+        # volumes:
+        #     - app_data:/usr/src/app/
+        #   - app_data:/usr/src/app/
+        #   - /usr/src/app/node_modules
         env_file:
-        - .env
+          - .env
     
     db:
       container_name: sequelize_database
       image: mysql:latest
-      volumes:
-        - db_data:/var/lib/sequelize_app_db
-      restart: always
+      # volumes:
+      #   - db_data:/var/lib/sequelize_app_db
+      # restart: always
       ports:
-        - '27017:27017'
+        - '3306:3306'
+      networks:
+        - backend
+      command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_ROOT_PASSWORD: 1145
-      #   MYSQL_DATABASE: wordpress
-      #   MYSQL_USER: wordpress
-      #   MYSQL_PASSWORD: wordpress
-      env_file:
-        - .env
+        # MYSQL_DATABASE: userDB
+        # MYSQL_USER: ajay
+        # MYSQL_PASSWORD: 1145
+      # env_file:
+      #   - .env
         # reading the environment variables from the env file
 
 networks:
-  existing-network:
-    external: true 
+  backend:
       # using the pre-existing default network
 
-volumes:
-    db_data: 
-    app_data:
+# volumes:
+#   data:
+#     external: true
+#     name: app_data
+# volumes:
+#     db_data: 
+#     app_data:
+
+
       # docker-compose build --> this will build the images
+      # docker-compose down -v --> this will destroy the images so u will rebuild them
       # docker-compose up -d --> this will run the services in detached mode
-    
+     # printenv --> to list out the environment variables in the container
+     #docker-compose restart <container-name> --> to restart only a particular container in docker-compose

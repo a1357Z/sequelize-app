@@ -2,9 +2,9 @@ const Sequelize = require('sequelize')
 
 //new Sequelize("database", "username", "password", options)
 const sequelize = new Sequelize(
-  process.env.database,
-  process.env.username, 
-  process.env.password, 
+  "userDB",
+  "ajay", 
+  "1145", 
   {
     host: '127.0.0.1',
     port: 3306,

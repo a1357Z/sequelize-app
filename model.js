@@ -38,8 +38,8 @@ const userProfile = sequelize.define('profile',{
     }
 })
 //synchronize the table
-User.sync({alter: true}) //alter makes sure that if we make any change in the schema it is updated in the actual sql table
-userProfile.sync({alter: true})
+User.sync({}) //alter makes sure that if we make any change in the schema it is updated in the actual sql table
+userProfile.sync({})
 //
 
 // form the relationships
